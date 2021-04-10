@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NotifyMeServiceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ClientType">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmailSettings">
+          <Key>
+            <PropertyRef Name="EmailSettingId" />
+          </Key>
+          <Property Name="EmailSettingId" Type="int" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="Host" Type="varchar" MaxLength="50" />
+          <Property Name="Port" Type="varchar" MaxLength="50" />
+          <Property Name="Limit" Type="varchar" MaxLength="50" />
+          <Property Name="MailAddress" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NotifyMePlease">
+          <Key>
+            <PropertyRef Name="NotifyMeServiceId" />
+          </Key>
+          <Property Name="NotifyMeServiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="NotifiyMeRequest" Type="varchar(max)" Nullable="false" />
+          <Property Name="NotifyMeResponse" Type="varchar(max)" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="ClientId" Type="int" />
+        </EntityType>
+        <EntityType Name="SmsSettings">
+          <Key>
+            <PropertyRef Name="SmsSettings" />
+          </Key>
+          <Property Name="SmsSettings" Type="int" Nullable="false" />
+          <Property Name="ApiId" Type="varchar" MaxLength="50" />
+          <Property Name="Username" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_NotifyMePlease_ClientType">
+          <End Role="ClientType" Type="Self.ClientType" Multiplicity="0..1" />
+          <End Role="NotifyMePlease" Type="Self.NotifyMePlease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientType">
+              <PropertyRef Name="ClientId" />
+            </Principal>
+            <Dependent Role="NotifyMePlease">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NotifyMePlease_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="NotifyMePlease" Type="Self.NotifyMePlease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="TypeId" />
+            </Principal>
+            <Dependent Role="NotifyMePlease">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NotifyMeServiceModelStoreContainer">
+          <EntitySet Name="ClientType" EntityType="Self.ClientType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailSettings" EntityType="Self.EmailSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotifyMePlease" EntityType="Self.NotifyMePlease" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SmsSettings" EntityType="Self.SmsSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_NotifyMePlease_ClientType" Association="Self.FK_NotifyMePlease_ClientType">
+            <End Role="ClientType" EntitySet="ClientType" />
+            <End Role="NotifyMePlease" EntitySet="NotifyMePlease" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NotifyMePlease_Type" Association="Self.FK_NotifyMePlease_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="NotifyMePlease" EntitySet="NotifyMePlease" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NotifyMeServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="NotifyMePlease">
+          <Key>
+            <PropertyRef Name="NotifyMeServiceId" />
+          </Key>
+          <Property Name="NotifyMeServiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="NotifiyMeRequest" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NotifyMeResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Type" Relationship="Self.FK_NotifyMePlease_Type" FromRole="NotifyMePlease" ToRole="Type" />
+          <Property Name="ClientId" Type="Int32" />
+          <NavigationProperty Name="ClientType" Relationship="NotifyMeServiceModel.FK_NotifyMePlease_ClientType" FromRole="NotifyMePlease" ToRole="ClientType" />
+        </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="NotifyMePlease" Relationship="Self.FK_NotifyMePlease_Type" FromRole="Type" ToRole="NotifyMePlease" />
+        </EntityType>
+        <Association Name="FK_NotifyMePlease_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="1" />
+          <End Role="NotifyMePlease" Type="Self.NotifyMePlease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="TypeId" />
+            </Principal>
+            <Dependent Role="NotifyMePlease">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NotifyMeServiceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="NotifyMePlease" EntityType="Self.NotifyMePlease" />
+          <EntitySet Name="Type" EntityType="Self.Type" />
+          <AssociationSet Name="FK_NotifyMePlease_Type" Association="Self.FK_NotifyMePlease_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="NotifyMePlease" EntitySet="NotifyMePlease" />
+          </AssociationSet>
+          <EntitySet Name="SmsSettings" EntityType="NotifyMeServiceModel.SmsSettings" />
+          <EntitySet Name="EmailSettings" EntityType="NotifyMeServiceModel.EmailSettings" />
+          <EntitySet Name="ClientType" EntityType="NotifyMeServiceModel.ClientType" />
+          <AssociationSet Name="FK_NotifyMePlease_ClientType" Association="NotifyMeServiceModel.FK_NotifyMePlease_ClientType">
+            <End Role="ClientType" EntitySet="ClientType" />
+            <End Role="NotifyMePlease" EntitySet="NotifyMePlease" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="SmsSettings">
+          <Key>
+            <PropertyRef Name="SmsSettings1" />
+          </Key>
+          <Property Name="SmsSettings1" Type="Int32" Nullable="false" />
+          <Property Name="ApiId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmailSettings">
+          <Key>
+            <PropertyRef Name="EmailSettingId" />
+          </Key>
+          <Property Name="EmailSettingId" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Host" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Port" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Limit" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ClientType">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="NotifyMePlease" Relationship="NotifyMeServiceModel.FK_NotifyMePlease_ClientType" FromRole="ClientType" ToRole="NotifyMePlease" />
+        </EntityType>
+        <Association Name="FK_NotifyMePlease_ClientType">
+          <End Type="NotifyMeServiceModel.ClientType" Role="ClientType" Multiplicity="0..1" />
+          <End Type="NotifyMeServiceModel.NotifyMePlease" Role="NotifyMePlease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientType">
+              <PropertyRef Name="ClientId" />
+            </Principal>
+            <Dependent Role="NotifyMePlease">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NotifyMeServiceModelStoreContainer" CdmEntityContainer="NotifyMeServiceEntities">
+          <EntitySetMapping Name="NotifyMePlease">
+            <EntityTypeMapping TypeName="NotifyMeServiceModel.NotifyMePlease">
+              <MappingFragment StoreEntitySet="NotifyMePlease">
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="NotifyMeServiceId" ColumnName="NotifyMeServiceId" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="NotifiyMeRequest" ColumnName="NotifiyMeRequest" />
+                <ScalarProperty Name="NotifyMeResponse" ColumnName="NotifyMeResponse" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="NotifyMeServiceModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SmsSettings">
+            <EntityTypeMapping TypeName="NotifyMeServiceModel.SmsSettings">
+              <MappingFragment StoreEntitySet="SmsSettings">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="ApiId" ColumnName="ApiId" />
+                <ScalarProperty Name="SmsSettings1" ColumnName="SmsSettings" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailSettings">
+            <EntityTypeMapping TypeName="NotifyMeServiceModel.EmailSettings">
+              <MappingFragment StoreEntitySet="EmailSettings">
+                <ScalarProperty Name="MailAddress" ColumnName="MailAddress" />
+                <ScalarProperty Name="Limit" ColumnName="Limit" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="EmailSettingId" ColumnName="EmailSettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientType">
+            <EntityTypeMapping TypeName="NotifyMeServiceModel.ClientType">
+              <MappingFragment StoreEntitySet="ClientType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
