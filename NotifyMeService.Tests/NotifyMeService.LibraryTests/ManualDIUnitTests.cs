@@ -22,7 +22,7 @@ namespace NotifyMeService.Tests.NotifyMeService.LibraryTests
             PigeonRequest request = new PigeonRequest();
             request.ClientId = "TestClient001";
             request.DateCreated = DateTime.Now;
-            request.EmailAddress = "kiranjagz@gmail.com";
+            request.EmailAddress = "bobbi@gmail.com";
             request.Message = "Dude!!! Niject you say???";
             request.Subject = "INinja";
 
